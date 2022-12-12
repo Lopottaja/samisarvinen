@@ -52,7 +52,7 @@ function love.update(dt)
       if obstacles[i].isHostile then
         --TODO: Implement hostile objects
       elseif not obstacles[i].isDead then
-        table.remove(obstacles, i)
+        table.remove(obstacles, i)  --TODO: Change removing object to setting it dead. Objects will be removed only once below the screen
         pistelaskuri=pistelaskuri+1
         love.audio.play(au)
       else
@@ -63,7 +63,7 @@ function love.update(dt)
   end
 
   --Add samisarvinen to objects
-  if math.random(0,40000)<nopeus then
+  if math.random(0,100000)<nopeus then
     table.insert(obstacles, {isHostile = false, isDead = false, sprite = samisarvinen, x = math.random(130,620), y = 0})
   end
 
