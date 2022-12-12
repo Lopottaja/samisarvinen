@@ -7,6 +7,7 @@ function love.load()
   love.graphics.draw(tie,0,0)
   love.graphics.draw(tie,0,resolution.y)
   samisarvinen = love.graphics.newImage("samisarvinen.png")
+  deadSprite = love.graphics.newImage("samisarvinen.png")
   love.graphics.setCanvas()
   rullaus =resolution.y*-1
   nopeus = 100--pelin nopeus, pikseliä sekunnissa
@@ -33,6 +34,10 @@ function törmäys(ax1,ay1,aw,ah, bx1,by1,bw,bh)
   return ax1 < bx2 and ax2 > bx1 and ay1 < by2 and ay2 > by1
 end
 
+function die()
+  --TODO: Implement failstate
+end
+
 function love.update(dt)
   --Background movement
   rullaus=rullaus+dt*nopeus
@@ -50,13 +55,15 @@ function love.update(dt)
     --Test collisions to objects
     if törmäys(obstacles[i].x+20,obstacles[i].y+20,60,60,autoX,autoY,92,180) then
       if obstacles[i].isHostile then
-        --TODO: Implement hostile objects
+        die()
+        break
       elseif not obstacles[i].isDead then
-        table.remove(obstacles, i)  --TODO: Change removing object to setting it dead. Objects will be removed only once below the screen
+        obstacles[i].isDead = true
+        obstacles[i].sprite = deadSprite
         pistelaskuri=pistelaskuri+1
         love.audio.play(au)
       else
-        --TODO: Implement setting object dead and changing sprite
+        return
       end
     end
 
